@@ -1,0 +1,27 @@
+.product-list {
+    padding: 2em;
+    text-align: center;
+}
+
+
+.products {
+    display: flex;
+    gap: 2em;
+    justify-content: center;
+}
+
+.product-card {
+    background-color: #fff;
+    padding: 1em;
+    border: 1px solid #eee;
+    width: 150px;
+    text-align: center;
+}
+
+.product-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 1em;
+}
+

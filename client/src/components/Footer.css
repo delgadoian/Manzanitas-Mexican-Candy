@@ -1,0 +1,34 @@
+.footer {
+    background-color: #f8d5c2;
+    color: #333;
+    text-align: center;
+    padding: 2em 1em;
+    font-family: Arial, sans-serif;
+}
+
+
+/* Social links list */
+.social-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 1.5em;
+    padding: 0;
+    margin: 1em 0;
+}
+
+/* Individual social links*/
+.social-links li a {
+    text-decoration: none;
+    color: #ff6f61;
+    font-weight: bold;
+}
+
+.social-links li a:hover {
+    color: #ff4f41; /* A slight dark on hover */
+}
+
+/* Footer text */
+.footer p {
+    margin: 0.5em 0;
+}
