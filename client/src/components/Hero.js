@@ -6,7 +6,7 @@ function Hero() {
         <div className="hero-content">
             <h2>Delicious Mexican Candy</h2>
             <p>Enjoy sweet, spicy, and traditional Mexican treats!</p>
-            <button className="show-now">Shop Now</button>
+            <button className="shop-now">Shop Now</button>
         </div>
     </section>
   )

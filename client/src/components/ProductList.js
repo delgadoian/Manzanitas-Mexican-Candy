@@ -29,7 +29,7 @@ function ProductList() {
                 </div>
                     <h4>{product.name}</h4>
                     <p>${product.price.toFixed(2)}</p>
-                    <button>Add to Cart</button>
+                    <button className="add-to-cart-button">Add to Cart</button>
                 </div>
             ))}
         </div>

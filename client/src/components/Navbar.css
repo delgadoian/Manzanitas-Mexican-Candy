@@ -13,14 +13,19 @@
     gap: 1em;
 }
 
-.navbar li {
+.navbar ul li {
     font-size: 1em;
     color: #333;
     transition: color 0.3s;
     cursor: pointer;
 }
 
-.navbar li:hover {
+.navbar ul li a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.navbar ul li a:hover {
     color: #ff6f61;
 }
 
