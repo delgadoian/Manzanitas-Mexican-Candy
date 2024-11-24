@@ -1,0 +1,90 @@
+/* General page styling */
+
+.contact-page {
+    padding: 2em;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    background-color: #fff7e6
+}
+
+.contact-page h1 {
+    font-size: 2.5em;
+    margin-bottom: 0.5em;
+    color: #ff6f61;
+}
+
+
+.contact-page p {
+    font-size: 1.2em;
+    margin-bottom: 1em;
+}
+
+
+/* Contact info styling */
+.contact-info {
+    margin-bottom: 2em;
+    font-size: 1.2em;
+}
+
+.contact-info a {
+    color: #ff6f61;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+/* Form Styling */
+.contact-form {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 1.5em;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 0.8em;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+    font-family: 'Arial', sans-serif;
+}
+
+textarea {
+    resize: none;
+    height: 120px;
+}
+
+/* Styling for the button */
+.submit-button {
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 0.8em 1.5em;
+    font-size: 1.2em;
+    font-family: 'Arial', sans-serif;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #ff4f41;
+    transform: scale(1.05);
+}
+
+.submit-button:active {
+    background-color: #e04438;
+    transform: scale(0.95);
+}

@@ -1,0 +1,77 @@
+/* General Page Styling */
+
+.shop-page {
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    min-height: 100vh; /* Make the page fill the full viewport height */
+    padding: 2em;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    background-color: #fff7e6;
+    
+}
+
+.shop-page h1 {
+    font-size: 2.5em;
+    margin-bottom: 1em;
+    color: #ff6f61;
+}
+
+/* Filter buttons styling */
+
+.filter-buttons {
+    margin-bottom: 2em;
+}
+
+.filter-buttons button {
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    margin: 0.5em;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.filter-buttons button:hover {
+    background-color: #ff4f41;
+    transform: scale(1.1);
+}
+
+.filter-buttons button:active {
+    background-color: #e04438;
+    transform: scale(0.95);
+}
+
+/* Candy grid layout */
+
+.candy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2em;
+    margin-top: 2em;
+}
+
+.candy-card {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    padding: 1em;
+}
+
+.candy-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 1em;
+}
+
+.candy-card p {
+    font-size: 1em;
+    color: #333;
+}
+
