@@ -1,26 +1,28 @@
 // Create an instance of express so we can build our API
-const express = require("express")
+const express = require("express");
+const router = express.Router();
+
+const cors = require('cors');
+
+// Router for the store's products
+const productsRouter = require('./routes/products');
 
 // Set the instance of express to the variable called app
-const app = express()
+const app = express();
 // Set the PORT constant to whatever port is assigned dynamically or use port 5000 as a fallback
 const PORT = process.env.PORT || 5000;
 
 // Middleware for parsing incoming JSON requests. 
-app.use(express.json())
+app.use(express.json());
+
+// Allow requests to be made from the same origin (locally)
+app.use(cors());
 
 // Create the connection to the database
-const { Pool } = require('pg');
-// Load environment variables
-require('dotenv').config()
+const pool = require('./db');
 
-const pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT
-});
+// The products router
+app.use('/products', productsRouter);
 
 pool.connect()
     .then(() => console.log('Connected to PostgreSQL'))
