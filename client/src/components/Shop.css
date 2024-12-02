@@ -75,3 +75,32 @@
     color: #333;
 }
 
+.add-to-cart-button {
+    background-color: #f8c102;
+    color: #fff; /* White text */
+    border: none;
+    border-radius: 12px; /* Rounded edges */
+    padding: 0.6em 1.2em; 
+    font-size: 1em; /* Slightly smaller than the hero buttons */
+    font-family: 'Arial', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for added depth */
+    
+}
+
+.add-to-cart-button:hover {
+    background-color: #ffb400;
+    transform: translateY(-3px); /* Give the button a slight lift */
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15); /* Enhance the shadow on hover */
+    
+}
+
+/* Active/Pressed state */
+.add-to-cart-button:active {
+    background-color: #e0a500; /* Darker yellow for active state */
+    transform: translateY(1px); /* Press down effect */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+
+}
+

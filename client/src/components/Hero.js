@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import "./Hero.css"
 function Hero() {
   return (
@@ -6,7 +7,7 @@ function Hero() {
         <div className="hero-content">
             <h2>Delicious Mexican Candy</h2>
             <p>Enjoy sweet, spicy, and traditional Mexican treats!</p>
-            <button className="shop-now">Shop Now</button>
+            <Link to={"/shop"}><button className="shop-now">Shop Now</button></Link>
         </div>
     </section>
   )

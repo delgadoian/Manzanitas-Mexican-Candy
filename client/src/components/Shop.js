@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import './Shop.css';
 import axios from 'axios'
 
+// For the shopping cart 
+import { useCart } from '../CartContext';
+
 
 function Shop() {
   const [filter, setFilter] = useState('All');
@@ -9,7 +12,7 @@ function Shop() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] =  useState(null);
-  let picture;
+  const { addToCart } = useCart();
   // Fetch the products from the back-end
   useEffect (() => {
     const fetchProducts = async () => {
@@ -58,6 +61,7 @@ function Shop() {
             <img src={product.image} alt={product.name} className="candy-image"/>
             <h3>{product.name}</h3>
             <p>${product.price}</p>
+            <button className="add-to-cart-button" onClick={ () => addToCart(product)}>Add to Cart</button>
           </div>
         ))}
       </div>

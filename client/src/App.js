@@ -10,6 +10,8 @@ import Footer from './components/Footer.js'
 // Pages that we are linking to
 import About from './components/About.js';
 import './App.css';
+import CartPage from './components/CartPage.js';
+import NoPage from './components/NoPage.js';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
       <Route path="/about" element={<About/>}/>
       <Route path="/shop" element={<Shop/>}/>
       <Route path="/contact" element={<Contact/>}/>
+      <Route path="/cart" element={<CartPage/>}/>
+      <Route path="*" element={<NoPage/>}/>
     </Routes>
     <Footer/>
    </Router>
