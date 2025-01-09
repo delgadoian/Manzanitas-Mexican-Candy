@@ -10,6 +10,9 @@ const productsRouter = require('./routes/products');
 // Router for the store's featured products
 const featuredProductsRouter = require('./routes/featuredProducts')
 
+// Router for the featured products
+const featuredProductsRouter = require('./routes/featuredProducts');
+
 // Set the instance of express to the variable called app
 const app = express();
 // Set the PORT constant to whatever port is assigned dynamically or use port 5000 as a fallback
@@ -27,8 +30,9 @@ const pool = require('./db');
 // The products router
 app.use('/products', productsRouter);
 
-// The featured products router
-app.use('/featured_products', featuredProductsRouter)
+// Featured products router
+app.use('/featured_products', featuredProductsRouter);
+
 
 pool.connect()
     .then(() => console.log('Connected to PostgreSQL'))
@@ -37,7 +41,7 @@ pool.connect()
 ));
 
 app.get('/', (req, res) => {
-    res.send("Hello!");
+    res.send("What up friends!");
 });
 
 // Start running the server 
