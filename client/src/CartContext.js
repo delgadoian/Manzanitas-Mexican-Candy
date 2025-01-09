@@ -18,10 +18,10 @@ export const CartProvider = ({ children }) => {
     // This increases the shopping cart counter
     const addToCart = (product) => {
         setCartItems((prevItems) => {
-            const existingItem = prevItems.find((item) => item.id === product.candy_id);
+            const existingItem = prevItems.find((item) => item.candy_id === product.candy_id);
             if (existingItem) {
                 return prevItems.map((item) => 
-                item.id === product.candy_id ? {...item, quantity: item.quantity + 1} : item
+                item.candy_id === product.candy_id ? {...item, quantity: item.quantity + 1} : item
             );
             } else {
                 return [...prevItems,  { ...product, quantity: 1}];

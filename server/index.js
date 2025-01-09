@@ -10,9 +10,6 @@ const productsRouter = require('./routes/products');
 // Router for the store's featured products
 const featuredProductsRouter = require('./routes/featuredProducts')
 
-// Router for the featured products
-const featuredProductsRouter = require('./routes/featuredProducts');
-
 // Set the instance of express to the variable called app
 const app = express();
 // Set the PORT constant to whatever port is assigned dynamically or use port 5000 as a fallback
