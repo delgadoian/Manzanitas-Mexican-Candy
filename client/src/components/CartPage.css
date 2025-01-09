@@ -1,7 +1,21 @@
+
+.cart-page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 75vh;
+}
+
+
+
+
+
 .cart-page {
+    flex: 1;
     padding: 2em;
     text-align: center;
+    overflow-y: auto; /* add scrolling if viewport is exceeded */
 }
+
 
 .cart-list {
     display: grid;

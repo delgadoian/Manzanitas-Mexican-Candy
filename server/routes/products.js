@@ -7,7 +7,7 @@ const pool = require('../db');
 
 router.get('/', async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM products');
+        const result = await pool.query('SELECT * FROM "Manzanitas Store".products');
         res.json(result.rows);
     } catch (err) {
         console.log(err.message);
