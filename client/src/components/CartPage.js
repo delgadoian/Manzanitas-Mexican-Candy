@@ -4,7 +4,7 @@ import './CartPage.css'
 
 
 function CartPage() {
-    const { cartItems, removeFromCart, clearCart } = useCart();
+    const { cartItems, removeFromCart, clearCart, increaseQuantity, decreaseQuantity } = useCart();
 
     const totalPrice = cartItems.reduce (
         (total, item) => total + item.price * item.quantity, 0
@@ -25,7 +25,13 @@ function CartPage() {
                                         <h3>{item.name}</h3>
                                         <p>Price: ${item.price}</p>
                                         <p>Quantity: {item.quantity}</p>
-                                        <button onClick={() => removeFromCart(item.id)}>Remove</button>
+                                        <div className="quantity-controls">
+                                            <button className="decrease-button" onClick={() => decreaseQuantity(item.candy_id)}>-</button>
+
+                                            <button className="increase-button" onClick={() => increaseQuantity(item.candy_id)}>+</button>
+                                            <button className="remove-button"onClick={() => removeFromCart(item.candy_id)}>Remove</button>
+                                        </div>
+                                        
                                     </div>
                                 </li>
                             ))}

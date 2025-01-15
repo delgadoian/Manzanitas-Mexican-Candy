@@ -7,6 +7,16 @@
     font-family: Helvetica, sans-serif;
 }
 
+
+.manzanitas-logo {
+    width: 60px; 
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 10px; /* add spacing between logo and the title */
+    vertical-align: middle; /* Align the logo with the text */
+    border-radius: 50%; /* Gives a little rounded look */
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.1) /* For subtle shadow */
+}
+
 .navbar ul {
     list-style: none;
     display: flex;
