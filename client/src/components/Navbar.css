@@ -1,30 +1,87 @@
 .navbar {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-between; /* Spread items across navbar */
+    align-items: center; /* Vertically align items */
     padding: 1em;
     background-color: #f8d5c2;
     font-family: Helvetica, sans-serif;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center; /* align logo and text */
+    gap: 1em;
+    flex: 0 0 auto;
+    
+   
+}
+
+.manzanitas-logo {
+    width: 50px;  /* Adjust width */
+    height: auto; /* Maintain the aspect ratio */
+    border-radius: 50%; /* Make the logo more circular */
+    object-fit: cover; /* Ensures the image fits within its dimensions */
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.1); 
+
+}
+
+.links {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+}
+
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.signup-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.signup-button:hover {
+    background-color: #45a049;
 }
 
 
-.manzanitas-logo {
-    width: 60px; 
-    height: auto; /* Maintain aspect ratio */
-    margin-right: 10px; /* add spacing between logo and the title */
-    vertical-align: middle; /* Align the logo with the text */
-    border-radius: 50%; /* Gives a little rounded look */
-    box-shadow: 0px 4px 6px rgba(0,0,0,0.1) /* For subtle shadow */
+
+h1 {
+    font-size: 1.5em;
+    text-align: center; /* Remove default margins */
+    flex: 1; /* Allow the title to take up the middle space */
 }
 
 .navbar ul {
     list-style: none;
     display: flex;
     gap: 1em;
+    margin: 0; /* Remove default margins */
+    padding: 0; /* Remove default padding */
+    align-items: center; /* Vertically align the links */
 }
 
 .navbar ul li {
-    font-size: 1em;
+    font-size: 1.2em;
     color: #333;
     transition: color 0.3s;
     cursor: pointer;
@@ -40,9 +97,10 @@
 }
 
 .cart-icon {
-    font-size: 1.2em;
+    font-size: 1.5em;
     color: #333;
     cursor: pointer;
+    flex: 0 0 auto; /* Prevents the cart icon from stretching */
 }
 
 .cart-icon a {

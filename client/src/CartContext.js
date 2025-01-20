@@ -31,12 +31,14 @@ export const CartProvider = ({ children }) => {
 
     // For the cart page, increases the quantity of the item
     const increaseQuantity = (productId) => {
+        // Check if the current item's candy_id matches the productID and if so, create a new object but increment the item quantity by 1
         setCartItems((prevItems) => prevItems.map((item) => item.candy_id === productId ? {...item, quantity: item.quantity + 1} : item))
     };
 
     // For the cart page, decrease the quantity of the item
     const decreaseQuantity = (productId) => {
-        setCartItems((prevItems) => prevItems.map((item) => item.candy_id === productId && item.quantity > 1 ? {...item, quantity: item.quantity - 1} : item).filter((item) => item.quantity > 0));
+        // Check if the current item's candy_id matches the productID and if so, create a new object but decrement the item quantity by 1
+        setCartItems((prevItems) => prevItems.map((item) => item.candy_id === productId && item.quantity >= 1 ? {...item, quantity: item.quantity - 1} : item).filter((item) => item.quantity > 0));
     };
 
     

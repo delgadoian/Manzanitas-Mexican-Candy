@@ -26,9 +26,8 @@ function CartPage() {
                                         <p>Price: ${item.price}</p>
                                         <p>Quantity: {item.quantity}</p>
                                         <div className="quantity-controls">
-                                            <button className="decrease-button" onClick={() => decreaseQuantity(item.candy_id)}>-</button>
-
                                             <button className="increase-button" onClick={() => increaseQuantity(item.candy_id)}>+</button>
+                                            <button className="decrease-button" onClick={() => decreaseQuantity(item.candy_id)}>-</button>
                                             <button className="remove-button"onClick={() => removeFromCart(item.candy_id)}>Remove</button>
                                         </div>
                                         

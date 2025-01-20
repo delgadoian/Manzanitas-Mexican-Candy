@@ -11,18 +11,22 @@ function Navbar() {
   return (
     <div>
       <nav className='navbar'>
-        <div className='logo'>
+        <div className='logo-section'>
           <img className="manzanitas-logo" src={ManzanitasLogo}/>
+          <h1>Manzanitas Mexican Candy</h1>
         </div>
-        <h1>Manzanitas Mexican Candy</h1>
 
-        <ul>
+        <ul className="links">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/shop">Shop</Link></li>
             <li><Link to="/about">About</Link></li>
             <li><Link to="/contact">Contact</Link></li>
         </ul>
-        <div className='cart-icon'><Link to="/cart">🛒</Link> ({totalItems})</div>
+        <div className="auth-buttons">
+          <Link to="/signup" className="signup-button">Sign Up</Link>
+          <div className='cart-icon'><Link to="/cart">🛒</Link> ({totalItems})</div>
+        </div>
+       
       </nav>
     </div>
     
