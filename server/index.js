@@ -8,7 +8,10 @@ const cors = require('cors');
 const productsRouter = require('./routes/products');
 
 // Router for the store's featured products
-const featuredProductsRouter = require('./routes/featuredProducts')
+const featuredProductsRouter = require('./routes/featuredProducts');
+
+// Router for the auth services
+const authRouter = require('./routes/auth.js');
 
 // Set the instance of express to the variable called app
 const app = express();
@@ -29,6 +32,8 @@ app.use('/products', productsRouter);
 
 // Featured products router
 app.use('/featured_products', featuredProductsRouter);
+
+app.use('/', authRouter);
 
 
 pool.connect()
