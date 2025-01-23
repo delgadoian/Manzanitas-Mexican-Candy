@@ -8,6 +8,7 @@ import Shop from './components/Shop.js'
 import Contact from './components/Contact.js'
 import Footer from './components/Footer.js'
 import Signup from './components/Signup.js';
+import Login from './components/Login.js';
 // Pages that we are linking to
 import About from './components/About.js';
 import './App.css';
@@ -25,6 +26,7 @@ function App() {
       <Route path="/contact" element={<Contact/>}/>
       <Route path="/cart" element={<CartPage/>}/>
       <Route path="/signup" element={<Signup/>}/>
+      <Route path="/login" element={<Login/>}/>
       <Route path="*" element={<NoPage/>}/>
     </Routes>
     <Footer/>

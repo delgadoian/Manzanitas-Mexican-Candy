@@ -23,6 +23,7 @@ function Navbar() {
             <li><Link to="/contact">Contact</Link></li>
         </ul>
         <div className="auth-buttons">
+          <Link to="/login" className="nav-login-button">Login</Link>
           <Link to="/signup" className="signup-button">Sign Up</Link>
           <div className='cart-icon'><Link to="/cart">🛒</Link> ({totalItems})</div>
         </div>
