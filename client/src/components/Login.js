@@ -26,11 +26,12 @@ function Login() {
         setError('');
 
         try {
+            console.log(formData);
             // Wait until we fetch the data from the backend
-            const response = await axios.post('/login', formData);
+            const response = await axios.post('http://localhost:5000/login', formData);
             // Set the message to the response code from the backend
             setMessage(response.data.message);
-            console.log('logged in user: ', response.data.user);
+    
         } catch (err) {
             // If we have an error, set the corresponding error message
             if (err.response) {

@@ -13,6 +13,9 @@ const featuredProductsRouter = require('./routes/featuredProducts');
 // Router for the auth services
 const authRouter = require('./routes/auth.js');
 
+// Login router
+const loginRouter = require('./routes/login.js');
+
 // Set the instance of express to the variable called app
 const app = express();
 // Set the PORT constant to whatever port is assigned dynamically or use port 5000 as a fallback
@@ -32,6 +35,9 @@ app.use('/products', productsRouter);
 
 // Featured products router
 app.use('/featured_products', featuredProductsRouter);
+
+// The login router
+app.use('/', loginRouter);
 
 app.use('/', authRouter);
 
