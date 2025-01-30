@@ -1,5 +1,5 @@
 .hero {
-    background-image: url("./images/HeroCardBackground.png");
+    background-image: url("./images/HeroCardBackground2.jpg");
     background-size: cover;
     background-position: center;
     color: #fff;
@@ -12,6 +12,14 @@
     position: relative;
     overflow: hidden;
 
+}
+
+.welcome-message {
+    font-size: 1.5em;
+    color: #fff;
+    margin-bottom: 1em;
+    font-weight: bold;
+    text-align: center;
 }
 
 .hero::before {

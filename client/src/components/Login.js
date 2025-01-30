@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import './Login.css';
 import axios from 'axios';
+// For page redirection
+import { useNavigate } from 'react-router-dom';
 
 
 // Function that will handle the login functionality
@@ -12,26 +14,40 @@ function Login() {
     });
 
     // set message and error message initially as blank strings
-    const [message, setMessage] = useState('');
+    //const [message, setMessage] = useState('');
     const [error, setError] = useState('');
+
+    // Hook for navigation
+    const navigate = useNavigate();
     // Handle change in input, create a new object that set the given name to the corresponding value
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({...formData, [name]: value});
     };
+
     // Handle submitting the data
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setMessage('');
         setError('');
-
         try {
             console.log(formData);
             // Wait until we fetch the data from the backend
             const response = await axios.post('http://localhost:5000/login', formData);
+
+            // Get the username
+            const { user } = response.data;
+            // Store the user's information in LocalStorage
+            localStorage.setItem('username', user.username);
+
+            // Store the welcome message so that it can persists in the homepage as long as the user is logged in
+            localStorage.setItem('welcomeMessage', `Welcome back, ${user.username}! Continue shopping for some delicious Mexican treats!`);
+
+            // Dispatch event so Navbar updates immediately
+            window.dispatchEvent(new Event('storage'));
+
+            // Redirect to the homepage
+            navigate('/');
             // Set the message to the response code from the backend
-            setMessage(response.data.message);
-    
         } catch (err) {
             // If we have an error, set the corresponding error message
             if (err.response) {
@@ -41,17 +57,14 @@ function Login() {
             } else {
                 setError('An error occurred. Please try again.');
             }
-
-            console.log('Login error:', err);
         }
     };
 
   return (
     <div className='login-page'>
-
         <form className='login-form' onSubmit={handleSubmit}>
             <h1>Login</h1>
-            {message && <p className="success-message">{message}</p>}
+            
             {error && <p className="error-message">{error}</p>}
 
             <div className='form-group'>
