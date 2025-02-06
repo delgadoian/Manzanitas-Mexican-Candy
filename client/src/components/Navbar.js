@@ -4,6 +4,7 @@ import './Navbar.css';
 import { useCart } from '../CartContext';
 import { Link, useNavigate } from 'react-router-dom'
 import ManzanitasLogo from './images/Manzanitas_Logo1.jpg'
+import axios from 'axios';
 // Navbar of the application, will be constant in all pages
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('username'));
@@ -21,14 +22,44 @@ function Navbar() {
     return () => window.removeEventListener('storage', checkLoginStatus);
   },[]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    // Save cart data to the backend before logging out
+    const userId = localStorage.getItem('userId');
+    const cartData = localStorage.getItem('cart');
+    console.log(`Userid: ${userId}`);
+    if (userId) {
+      try {
+        // Parse cart data safely
+        const parsedCart = cartData ? JSON.parse(cartData) : [];
+
+        // Ensure it is an array before sending
+        if (Array.isArray(parsedCart) && parsedCart.length > 0) {
+          await axios.post('http://localhost:5000/api/cart/save-cart', {
+            userId,
+            cartItems: parsedCart
+          });
+          console.log('Cart saved successfully');
+        } else {
+          console.error("Cart data is not an array: ", parsedCart);
+        }
+      } catch (error) {
+        console.error('Error saving cart: ', error.message);
+      }
+      
+    }
     // Clear user data from LocalStorage
     localStorage.removeItem('username');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('cart');
     localStorage.removeItem('welcomeMessage');
+
+    // Trigger an event so Hero.js updates
+    window.dispatchEvent(new Event('storage'));
 
     // Update state to reflect logout
     setIsLoggedIn(false);
-    window.location.reload();
+   
+    navigate('/');
   }
 
   const { cartItems } = useCart();

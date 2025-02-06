@@ -16,6 +16,9 @@ const authRouter = require('./routes/auth.js');
 // Login router
 const loginRouter = require('./routes/login.js');
 
+// router for saving the users cart
+const cartRouter = require('./routes/cart.js');
+
 // Set the instance of express to the variable called app
 const app = express();
 // Set the PORT constant to whatever port is assigned dynamically or use port 5000 as a fallback
@@ -40,6 +43,9 @@ app.use('/featured_products', featuredProductsRouter);
 app.use('/', loginRouter);
 
 app.use('/', authRouter);
+
+// User cart router
+app.use('/api/cart', cartRouter);
 
 
 pool.connect()

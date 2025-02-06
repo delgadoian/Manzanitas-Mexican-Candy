@@ -24,18 +24,14 @@ router.post('/login', async(req, res) => {
         // Save data fetched in user object
         const user = result.rows[0];
 
-        console.log(`user: ${user}`);
-
         // validate password
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if(!isPasswordValid) {
             return res.status(400).json({error: 'Invalid username/email or password'});
-
         }
 
         // Respond with user info (excluding the password)
-
         res.status(200).json({
             message: 'Login successful',
             user: {

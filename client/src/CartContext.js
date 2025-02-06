@@ -1,5 +1,5 @@
 import React, {createContext, useState, useContext, useEffect } from 'react';
-
+import axios from 'axios';
 
 const CartContext =  createContext();
 // The useCart hook is what will increment our shopping cart counter when a user adds an item to the cart
@@ -7,13 +7,38 @@ export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
     // Load cart from LocalStorage
-    const initalCart = JSON.parse(localStorage.getItem('cart')) || [];
-    const [cartItems, setCartItems] = useState([]);
+    const initialCart = JSON.parse(localStorage.getItem('cart')) || [];
+    const [cartItems, setCartItems] = useState(initialCart);
 
-    // Save the cart to localStorage when there is a change
+    // Save cart to Local Storage whenever cartItems change
     useEffect(() => {
         localStorage.setItem('cart', JSON.stringify(cartItems));
     }, [cartItems]);
+
+    // Clear cart when user logs out
+    useEffect(() => {
+        const handleLogout = () => {
+            console.log("User logging out, clearing cart");
+            setCartItems([]); // Updates the cart to be empty
+        };
+
+        window.addEventListener('storage', handleLogout);
+        return () => window.removeEventListener('storage', handleLogout);
+    }, []);
+
+  
+
+    // Save the cart to localStorage when there is a change
+    useEffect(() => {
+        const userId = localStorage.getItem('userId');
+        if (userId) {
+            axios.get(`http://localhost:5000/api/cart/get-cart/${userId}`).then((response) => {
+                console.log('Cart response: ', response.data);
+                setCartItems(response.data);
+                localStorage.setItem('cart', JSON.stringify(response.data));
+            }).catch((error) => console.log('Error getting cart: ', error.message));    
+        }
+    }, []);
 
     // This increases the shopping cart counter
     const addToCart = (product) => {
@@ -51,6 +76,7 @@ export const CartProvider = ({ children }) => {
 
     const clearCart = () => {
         setCartItems([]);
+        localStorage.removeItem('cart'); // Remove cart from localStorage
     };
 
     return (

@@ -39,6 +39,9 @@ function Login() {
             // Store the user's information in LocalStorage
             localStorage.setItem('username', user.username);
 
+            // Set the userId in the localStorage when logging in
+            localStorage.setItem('userId', user.id);
+
             // Store the welcome message so that it can persists in the homepage as long as the user is logged in
             localStorage.setItem('welcomeMessage', `Welcome back, ${user.username}! Continue shopping for some delicious Mexican treats!`);
 
