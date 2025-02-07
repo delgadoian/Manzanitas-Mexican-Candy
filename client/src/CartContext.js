@@ -30,25 +30,77 @@ export const CartProvider = ({ children }) => {
 
     // Save the cart to localStorage when there is a change
     useEffect(() => {
+        // Get the userId from local storage
         const userId = localStorage.getItem('userId');
-        if (userId) {
-            axios.get(`http://localhost:5000/api/cart/get-cart/${userId}`).then((response) => {
-                console.log('Cart response: ', response.data);
-                setCartItems(response.data);
-                localStorage.setItem('cart', JSON.stringify(response.data));
-            }).catch((error) => console.log('Error getting cart: ', error.message));    
+        try {
+            if (userId) {
+                // Save the cart to the backend
+                axios.get(`http://localhost:5000/api/cart/get-cart/${userId}`).then((response) => {
+                    console.log('Cart response: ', response.data);
+                    // Set the cartItems to the response data
+                    setCartItems(response.data);
+                    // Save the cart to localStorage
+                    localStorage.setItem('cart', JSON.stringify(response.data));
+                }).catch((error) => console.log('Error getting cart: ', error.message));    
+            }
+        } catch (error) {
+            console.error('Error fetching cart: ', error.message);
         }
+        
+    }, []);
+
+    // Fetch saved cart from database on Login
+    const fetchCart = () => {
+        // Get the userId from localStorage
+        const userId = localStorage.getItem('userId');
+        try {
+            // If we have a userId, fetch the cart
+            if (userId) {
+                console.log("Fetching cart for user: ", userId);
+                // Fetch the cart from the backend
+                axios.get(`http://localhost:5000/api/cart/get-cart/${userId}`).then((response) => {
+                    console.log('Cart response: ', response.data);
+                    // Set the cartItems to the response data
+                    setCartItems(response.data);
+                    // Save the cart to localStorage
+                    localStorage.setItem('cart', JSON.stringify(response.data));
+                }).catch((error) => console.log('Error getting cart: ', error.message));
+            }
+        } catch (error) {
+            console.error('Error fetching cart: ', error.message);
+        }
+       
+    };
+
+    // Load cart when page loads or when user logs in
+    useEffect(() => {
+        // fetch cart when component mounts
+        fetchCart();
+        // Function to handle login success and fetch cart
+        const handleLoginSuccess = () => {
+            console.log("Login successful, fetching cart");
+            fetchCart();
+        };
+        // Create the event listener for login-successful that will trigger the handleLoginSuccess function when logging in
+        window.addEventListener('login-successful', handleLoginSuccess);
+        // Remove the event lister after component mounts
+        return () => window.removeEventListener('login-successful', handleLoginSuccess);
     }, []);
 
     // This increases the shopping cart counter
     const addToCart = (product) => {
+        // Check if the product is already in the cart
         setCartItems((prevItems) => {
+            // Find an existing item by calling the .find() method on the prevItems array
             const existingItem = prevItems.find((item) => item.candy_id === product.candy_id);
+            // Conditional that checks if we have an existing item
             if (existingItem) {
+                // If we do, we map over the previous items and increment the quantity of the item
                 return prevItems.map((item) => 
                 item.candy_id === product.candy_id ? {...item, quantity: item.quantity + 1} : item
             );
             } else {
+                // If we don't have an existing item, we return a new array with the previous items and the new item
                 return [...prevItems,  { ...product, quantity: 1}];
             }
         });
@@ -67,14 +119,16 @@ export const CartProvider = ({ children }) => {
     };
 
     
-
+    // This removes an item from the cart
     const removeFromCart = (productId) => {
+        // Filter out the item with the matching candy_id
         setCartItems((prevItems) => 
             prevItems.filter((item) => item.candy_id !== productId)
         );
     };
-
+    // This clears the cart
     const clearCart = () => {
+        // Set the cartItems to an empty array
         setCartItems([]);
         localStorage.removeItem('cart'); // Remove cart from localStorage
     };

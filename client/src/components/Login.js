@@ -47,6 +47,8 @@ function Login() {
 
             // Dispatch event so Navbar updates immediately
             window.dispatchEvent(new Event('storage'));
+            // Dispatch event so that CartContext updates immediately
+            window.dispatchEvent(new Event('login-successful'));
 
             // Redirect to the homepage
             navigate('/');
