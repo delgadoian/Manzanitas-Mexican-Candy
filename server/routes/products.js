@@ -15,4 +15,14 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get("/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await pool.query('SELECT * FROM "Manzanitas Store".products WHERE id = $1', [id]);
+        res.json(result.rows);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send("Error fetching data. Please try again.");
+    }
+});
 module.exports = router;

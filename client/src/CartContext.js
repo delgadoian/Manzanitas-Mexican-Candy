@@ -6,86 +6,101 @@ const CartContext =  createContext();
 export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
-    // Load cart from LocalStorage
-    const initialCart = JSON.parse(localStorage.getItem('cart')) || [];
-    const [cartItems, setCartItems] = useState(initialCart);
+    
+    const [cartItems, setCartItems] = useState([]);
 
-    // Save cart to Local Storage whenever cartItems change
-    useEffect(() => {
-        localStorage.setItem('cart', JSON.stringify(cartItems));
-    }, [cartItems]);
-
-    // Clear cart when user logs out
-    useEffect(() => {
-        const handleLogout = () => {
-            console.log("User logging out, clearing cart");
-            setCartItems([]); // Updates the cart to be empty
-        };
-
-        window.addEventListener('storage', handleLogout);
-        return () => window.removeEventListener('storage', handleLogout);
-    }, []);
-
-  
-
-    // Save the cart to localStorage when there is a change
-    useEffect(() => {
-        // Get the userId from local storage
+   
+    // Fetch cart from database
+    const fetchCartFromDatabase = async () => {
         const userId = localStorage.getItem('userId');
-        try {
-            if (userId) {
-                // Save the cart to the backend
-                axios.get(`http://localhost:5000/api/cart/get-cart/${userId}`).then((response) => {
-                    console.log('Cart response: ', response.data);
-                    // Set the cartItems to the response data
-                    setCartItems(response.data);
-                    // Save the cart to localStorage
-                    localStorage.setItem('cart', JSON.stringify(response.data));
-                }).catch((error) => console.log('Error getting cart: ', error.message));    
-            }
-        } catch (error) {
-            console.error('Error fetching cart: ', error.message);
-        }
-        
-    }, []);
 
-    // Fetch saved cart from database on Login
-    const fetchCart = () => {
-        // Get the userId from localStorage
-        const userId = localStorage.getItem('userId');
-        try {
-            // If we have a userId, fetch the cart
-            if (userId) {
+        if (userId) {
+            try {
                 console.log("Fetching cart for user: ", userId);
-                // Fetch the cart from the backend
-                axios.get(`http://localhost:5000/api/cart/get-cart/${userId}`).then((response) => {
-                    console.log('Cart response: ', response.data);
-                    // Set the cartItems to the response data
+                const response = await axios.get(`http://localhost:5000/api/cart/get-cart/${userId}`);
+
+                if (response.data.length > 0) {
                     setCartItems(response.data);
-                    // Save the cart to localStorage
                     localStorage.setItem('cart', JSON.stringify(response.data));
-                }).catch((error) => console.log('Error getting cart: ', error.message));
+                } else {
+                    console.log("No cart items found in database, keeping local cart.");
+                }
+            } catch (error) {
+                console.error('Error fetching cart: ', error.message);
             }
-        } catch (error) {
-            console.error('Error fetching cart: ', error.message);
         }
-       
     };
 
-    // Load cart when page loads or when user logs in
+    // Function to save cart to the database
+    const saveCartToDatabase = async (cartItems) => {
+        console.log("Saving cart to database");
+        const userId = localStorage.getItem('userId');
+        if (userId && cartItems.length > 0) {
+            try {
+                await axios.post('http://localhost:5000/api/cart/save-cart', {
+                    userId,
+                    cartItems
+                }).then(() => console.log('Cart saved successfully')).catch((error) => console.error('Error saving cart: ', error.message));
+            } catch (error) {
+                console.error('Error saving cart: ', error.message);
+            
+            }
+        }
+    };
+
+    // Load cart from localStorage on page load
     useEffect(() => {
-        // fetch cart when component mounts
-        fetchCart();
-        // Function to handle login success and fetch cart
+        const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        if (localCart.length > 0) {
+            console.log("loading cart from localStorage: ", localCart);
+            setCartItems(localCart);
+        } else {
+            fetchCartFromDatabase(); // Fetch cart from database if not in localStorage
+            console.log("No cart items found in localStorage");
+        }
+    }, []);
+
+    // Save cart to localStorage and database on change
+    useEffect(() => {
+        
+        if (cartItems.length > 0) {
+            localStorage.setItem('cart', JSON.stringify(cartItems));
+            saveCartToDatabase(cartItems);
+        }
+        
+    }, [cartItems]);
+
+    // EDIT THIS USEEFFECT
+
+    
+
+    // fetch cart from database on login and page load
+    useEffect(() => {
         const handleLoginSuccess = () => {
             console.log("Login successful, fetching cart");
-            fetchCart();
+            fetchCartFromDatabase();
         };
-        // Create the event listener for login-successful that will trigger the handleLoginSuccess function when logging in
+        
         window.addEventListener('login-successful', handleLoginSuccess);
-        // Remove the event lister after component mounts
         return () => window.removeEventListener('login-successful', handleLoginSuccess);
     }, []);
+
+
+
+    // Clear local storage on logout
+    useEffect(() => { 
+        console.log("In the useEffect for logout");
+        const handleLogout = () => {
+            console.log("Logging out, clearing cart");
+            setCartItems([]);
+            localStorage.removeItem('cart');
+        };
+
+        window.addEventListener('logout', handleLogout);
+        return () => window.removeEventListener('logout', handleLogout);
+    },[]);
+    
 
     // This increases the shopping cart counter
     const addToCart = (product) => {
@@ -104,18 +119,25 @@ export const CartProvider = ({ children }) => {
                 return [...prevItems,  { ...product, quantity: 1}];
             }
         });
+
     };
 
     // For the cart page, increases the quantity of the item
     const increaseQuantity = (productId) => {
+        console.log(`ProductId: ${productId}`);
         // Check if the current item's candy_id matches the productID and if so, create a new object but increment the item quantity by 1
         setCartItems((prevItems) => prevItems.map((item) => item.candy_id === productId ? {...item, quantity: item.quantity + 1} : item))
+        localStorage.setItem('cart', JSON.stringify(cartItems));
     };
 
     // For the cart page, decrease the quantity of the item
     const decreaseQuantity = (productId) => {
         // Check if the current item's candy_id matches the productID and if so, create a new object but decrement the item quantity by 1
         setCartItems((prevItems) => prevItems.map((item) => item.candy_id === productId && item.quantity >= 1 ? {...item, quantity: item.quantity - 1} : item).filter((item) => item.quantity > 0));
+        localStorage.setItem('cart', JSON.stringify(cartItems));
+        if (cartItems.length === 0) {
+            clearCart();
+        }
     };
 
     
@@ -125,12 +147,28 @@ export const CartProvider = ({ children }) => {
         setCartItems((prevItems) => 
             prevItems.filter((item) => item.candy_id !== productId)
         );
+        console.log(`Remove from cart: ${productId}`);
+        if (cartItems.length === 0) {
+            clearCart();
+        } else {
+            
+            localStorage.setItem('cart', JSON.stringify(cartItems));
+        }
     };
     // This clears the cart
     const clearCart = () => {
         // Set the cartItems to an empty array
         setCartItems([]);
         localStorage.removeItem('cart'); // Remove cart from localStorage
+
+        // Clear the cart from the backend if user is logged in
+        const userId = localStorage.getItem('userId');
+        console.log(`In the clearCart function, userId: ${userId}`);
+        if (userId) {
+            axios.post('http://localhost:5000/api/cart/clear-cart', 
+                {userId}
+            ).then(() => console.log('Cart cleared successfully')).catch((error) => console.error('Error clearing cart: ', error.message));
+        }
     };
 
     return (

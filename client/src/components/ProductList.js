@@ -11,7 +11,7 @@ function ProductList() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const { addToCart } = useCart();
+    const {addToCart } = useCart();
 
 
     // Fetch the products from the back end

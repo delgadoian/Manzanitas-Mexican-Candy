@@ -10,6 +10,8 @@ function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('username'));
   const navigate = useNavigate();
 
+  
+
   useEffect(() => {
     // Check login state on mount
     setIsLoggedIn(!!localStorage.getItem('username'));
@@ -39,6 +41,7 @@ function Navbar() {
             cartItems: parsedCart
           });
           console.log('Cart saved successfully');
+          
         } else {
           console.error("Cart data is not an array: ", parsedCart);
         }
@@ -52,8 +55,10 @@ function Navbar() {
     localStorage.removeItem('userId');
     localStorage.removeItem('cart');
     localStorage.removeItem('welcomeMessage');
-
+    // Trigger an event so that our cart updates 
+    window.dispatchEvent(new Event('logout'));
     // Trigger an event so Hero.js updates
+
     window.dispatchEvent(new Event('storage'));
 
     // Update state to reflect logout
