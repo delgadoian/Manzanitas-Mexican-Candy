@@ -131,13 +131,23 @@ export const CartProvider = ({ children }) => {
     };
 
     // For the cart page, decrease the quantity of the item
-    const decreaseQuantity = (productId) => {
-        // Check if the current item's candy_id matches the productID and if so, create a new object but decrement the item quantity by 1
-        setCartItems((prevItems) => prevItems.map((item) => item.candy_id === productId && item.quantity >= 1 ? {...item, quantity: item.quantity - 1} : item).filter((item) => item.quantity > 0));
-        localStorage.setItem('cart', JSON.stringify(cartItems));
-        if (cartItems.length === 0) {
+    const decreaseQuantity = async (productId) => {
+       setCartItems((prevItems) => {
+        const updatedCart = prevItems.map((item) => item.candy_id === productId ? {...item, quantity: item.quantity - 1} : item)
+        .filter((item) => item.quantity > 0); // Remove items with quantity 0
+        
+        // Update localStorage
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+
+        // If the cart is now empty, clear it from the database
+        if (updatedCart.length === 0) {
             clearCart();
-        }
+    
+        } else {
+            saveCartToDatabase(updatedCart);
+        } 
+        return updatedCart;
+       });
     };
 
     
@@ -156,19 +166,24 @@ export const CartProvider = ({ children }) => {
         }
     };
     // This clears the cart
-    const clearCart = () => {
-        // Set the cartItems to an empty array
-        setCartItems([]);
-        localStorage.removeItem('cart'); // Remove cart from localStorage
+    const clearCart = async() => {
 
         // Clear the cart from the backend if user is logged in
         const userId = localStorage.getItem('userId');
         console.log(`In the clearCart function, userId: ${userId}`);
         if (userId) {
-            axios.post('http://localhost:5000/api/cart/clear-cart', 
-                {userId}
-            ).then(() => console.log('Cart cleared successfully')).catch((error) => console.error('Error clearing cart: ', error.message));
+            try {
+                await axios.post('http://localhost:5000/api/cart/clear-cart', 
+                    {userId});
+            } catch (error) {
+                console.error('Error clearing cart: ', error.message);
+            }
+            
         }
+
+        // Clear local cart and localStorage
+        setCartItems([]);
+        localStorage.removeItem('cart');
     };
 
     return (

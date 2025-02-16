@@ -25,24 +25,24 @@ router.post('/save-cart', async (req, res) => {
         try {
             // Use a transaction to update each item in the cart
             await pool.query('BEGIN');
-            // Check if the cart is not empty
-            if (cartItems.length > 0) {
-                // Remove existing cart items for this user
+            if (cartItems.length === 0) {
                 await pool.query('DELETE FROM "Manzanitas Store".user_cart WHERE user_id = $1', [userId]);
-
+            } else {
+                await pool.query('DELETE FROM "Manzanitas Store".user_cart WHERE user_id = $1', [userId]);
                 // Insert updated cart items
-                    const insertQuery = `
-                    INSERT INTO "Manzanitas Store".user_cart (user_id, candy_id, quantity) VALUES ($1, $2, $3)
+                const insertQuery = `
+                INSERT INTO "Manzanitas Store".user_cart (user_id, candy_id, quantity) VALUES ($1, $2, $3)
                 `;
                 // insert each item in the cart
                 for (const item of cartItems) {
                     await pool.query(insertQuery, [userId, item.candy_id, item.quantity]);
                 }
+                
             }
             // Commit the transaction
             await pool.query('COMMIT');
             res.status(200).json({message: 'Cart saved successfully'});
-        // If we have errors, rollback the transaction
+            // If we have errors, rollback the transaction
         } catch (error) {
             await pool.query('ROLLBACK');
             console.error('Error saving cart: ', error.message);
@@ -86,7 +86,12 @@ router.post('/clear-cart', async (req, res) => {
     const userId = req.body.userId;
     console.log(`user ID in clear cart: ${userId}`);
     try {
-        await pool.query('DELETE FROM "Manzanitas Store".user_cart WHERE user_id = $1', [userId]);
+        const result = await pool.query('DELETE FROM "Manzanitas Store".user_cart WHERE user_id = $1', [userId]);
+        if (result.rowCount === 0) {
+            console.log(`No cart items found for user ${userId}`);
+        } else {
+            console.log(`Cart cleared for user ${userId}`);
+        }
         res.status(200).json({message: 'Cart cleared successfully'});
     } catch (error) {
         console.error('Error clearing cart: ', error.message);
